@@ -1,0 +1,42 @@
+trigger:
+  - main
+
+variables:
+  tf_version: "latest"
+  tf_state_resource_group: "rg-tfstate"
+  tf_enviornment: "development"
+  tf_statelocation: "souteastasia"
+  tf_state_storage_account: "statetfstorage3201"
+  tf_state_sku: "Standard_LRS"
+  tf_container_name: "tfstate"
+
+  pool:
+    vmImage: "ubuntu-latest"
+
+stages:
+  # Run Checkov, upload results and optionally halt if there any problems found
+  ######################################################################
+
+  - stage: "runCheckov"
+    displayName: "Checkov - Scan Terraform files"
+    jobs:
+      - job: "runCheckov"
+        displayName: "Checkov > Pull, run and publish results of Checkov scan"
+        steps:
+          - bash: |
+              docker pull bridgecrew/checkov
+            workingDirectory: $(System.DefaultWorkingDirectory)
+            displayName: "Pull > bridgecrew/checkov"
+          - bash: |
+              docker run --volume $(pwd):/tf bridgecrew/checkov --directory /tf --output junitxml --soft-fail > $(pwd)/CheckovReport.xml
+            workingDirectory: $(System.DefaultWorkingDirectory)
+            displayName: "Run > checkov"
+          - task: PublishTestResults@2
+            inputs:
+              testRunTitle: "Checkov Results"
+              failTaskOnFailedTests: true
+              testResultsFormat: "JUnit"
+              testResultsFiles: "CheckovReport.xml"
+              searchFolder: "$(System.DefaultWorkingDirectory)"
+            displayName: "Publish > Checkov scan results"
+    
