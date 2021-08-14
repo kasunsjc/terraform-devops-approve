@@ -10,8 +10,8 @@ variables:
   tf_state_sku: "Standard_LRS"
   tf_container_name: "tfstate"
 
-  pool:
-    vmImage: "ubuntu-latest"
+pool:
+  vmImage: "ubuntu-latest"
 
 stages:
   # Run Checkov, upload results and optionally halt if there any problems found
