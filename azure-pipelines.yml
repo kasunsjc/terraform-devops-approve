@@ -49,12 +49,12 @@ stages:
         displayName: "Terraform > install, init and validate"
         continueOnError: false
         steps:
-          - task: TerraformInstaller@0
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
             inputs:
               terraformVersion: "$(tf_version)"
             displayName: "Install > terraform"
 
-          - task: TerraformCLI@0
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
             inputs:
               command: "init"
               backendType: "azurerm"
@@ -68,7 +68,7 @@ stages:
               backendAzureRmKey: "$(tf_environment).terraform.tstate"
             displayName: "Run > terraform init"
 
-          - task: TerraformCLI@0
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
             inputs:
               command: "validate"
               environmentServiceName: "$(MSDN Platform)"
