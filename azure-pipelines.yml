@@ -9,6 +9,7 @@ variables:
   tf_state_storage_account: "statetfstorage3201"
   tf_state_sku: "Standard_LRS"
   tf_container_name: "tfstate"
+  service_connection_name: "MSDN Platform"
 
 pool:
   vmImage: "ubuntu-latest"
@@ -58,7 +59,7 @@ stages:
             inputs:
               command: "init"
               backendType: "azurerm"
-              backendServiceArm: "$(MSDN Platform)"
+              backendServiceArm: "$(service_connection_name)"
               ensureBackend: true
               backendAzureRmResourceGroupName: "$(tf_environment)-$(tf_state_resource_group)"
               backendAzureRmResourceGroupLocation: "$(tf_statelocation)"
@@ -71,5 +72,5 @@ stages:
           - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
             inputs:
               command: "validate"
-              environmentServiceName: "$(MSDN Platform)"
+              environmentServiceName: "$(service_connection_name)"
             displayName: "Run > terraform validate" 
