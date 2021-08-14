@@ -39,4 +39,37 @@ stages:
               testResultsFiles: "CheckovReport.xml"
               searchFolder: "$(System.DefaultWorkingDirectory)"
             displayName: "Publish > Checkov scan results"
-    
+
+  - stage: "validateTerraform"
+    displayName: "Terraform - Validate"
+    dependsOn:
+      - "runCheckov"
+    jobs:
+      - job: "TerraformJobs"
+        displayName: "Terraform > install, init and validate"
+        continueOnError: false
+        steps:
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: "$(tf_version)"
+            displayName: "Install > terraform"
+
+          - task: TerraformCLI@0
+            inputs:
+              command: "init"
+              backendType: "azurerm"
+              backendServiceArm: "$(MSDN Platform)"
+              ensureBackend: true
+              backendAzureRmResourceGroupName: "$(tf_environment)-$(tf_state_resource_group)"
+              backendAzureRmResourceGroupLocation: "$(tf_statelocation)"
+              backendAzureRmStorageAccountName: "$(tf_state_storage_account)"
+              backendAzureRmStorageAccountSku: "$(tf_state_sku)"
+              backendAzureRmContainerName: $(tf_container_name)
+              backendAzureRmKey: "$(tf_environment).terraform.tstate"
+            displayName: "Run > terraform init"
+
+          - task: TerraformCLI@0
+            inputs:
+              command: "validate"
+              environmentServiceName: "$(MSDN Platform)"
+            displayName: "Run > terraform validate" 
