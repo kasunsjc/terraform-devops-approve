@@ -4,7 +4,7 @@ trigger:
 variables:
   tf_version: "0.15.0"
   tf_state_resource_group: "rg-tfstate"
-  tf_enviornment: "development"
+  tf_enviornment: "dev"
   tf_statelocation: "souteastasia"
   tf_state_storage_account: "statetfstorage3201"
   tf_state_sku: "Standard_LRS"
