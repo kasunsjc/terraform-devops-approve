@@ -49,7 +49,7 @@ stages:
         displayName: "Terraform > install, init and validate"
         continueOnError: false
         steps:
-          - task: TerraformInstaller
+          - task: TerraformInstaller@0
             inputs:
               terraformVersion: "$(tf_version)"
             displayName: "Install > terraform"
