@@ -2,7 +2,7 @@ trigger:
   - main
 
 variables:
-  tf_version: "latest"
+  tf_version: "0.15.0"
   tf_state_resource_group: "rg-tfstate"
   tf_enviornment: "development"
   tf_statelocation: "souteastasia"
