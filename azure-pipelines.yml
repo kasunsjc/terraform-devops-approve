@@ -61,7 +61,7 @@ stages:
               backendType: "azurerm"
               backendServiceArm: "$(service_connection_name)"
               ensureBackend: true
-              backendAzureRmResourceGroupName: "$(tf_environment)-$(tf_state_resource_group)"
+              backendAzureRmResourceGroupName: "$(tf_enviornment)-$(tf_state_resource_group)"
               backendAzureRmResourceGroupLocation: "$(tf_statelocation)"
               backendAzureRmStorageAccountName: "$(tf_state_storage_account)"
               backendAzureRmStorageAccountSku: "$(tf_state_sku)"
